@@ -7,7 +7,9 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float xClampRange = 30f;
     [SerializeField] private float yClampRange = 20f;
     
-    [SerializeField] private float controllRollFactor = 20;
+    [SerializeField] private float controllRollFactor = 20f;
+    [SerializeField] private float rotationSpeed = 10f;
+    
     [SerializeField] private float xRotationSpeed = 0;
     [SerializeField] private float yRotationSpeed = 0;
     
@@ -22,7 +24,7 @@ public class PlayerMovement : MonoBehaviour {
         //transform.localRotation *= Quaternion.Euler(xRotationSpeed* Time.deltaTime, yRotationSpeed* Time.deltaTime, controllRollFactor * Time.deltaTime);
         //transform.localRotation *= Quaternion.Euler(0f, 0f, controllRollFactor * Time.deltaTime);
         Quaternion targetRotation = Quaternion.Euler(0f, 0f, -controllRollFactor * movement.x);
-        transform.localRotation = targetRotation;
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
 
