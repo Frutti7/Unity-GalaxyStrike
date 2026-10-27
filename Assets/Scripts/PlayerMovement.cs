@@ -4,10 +4,25 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float controlSpeed = 10f;
+    [SerializeField] private float xClampRange = 30f;
+    [SerializeField] private float yClampRange = 20f;
+    
+    [SerializeField] private float controllRollFactor = 20;
+    [SerializeField] private float xRotationSpeed = 0;
+    [SerializeField] private float yRotationSpeed = 0;
+    
     Vector2 movement;
 
     private void Update() {
         ProcessMove();
+        ProcessRotation();
+    }
+
+    private void ProcessRotation() {
+        //transform.localRotation *= Quaternion.Euler(xRotationSpeed* Time.deltaTime, yRotationSpeed* Time.deltaTime, controllRollFactor * Time.deltaTime);
+        //transform.localRotation *= Quaternion.Euler(0f, 0f, controllRollFactor * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.Euler(0f, 0f, -controllRollFactor * movement.x);
+        transform.localRotation = targetRotation;
     }
 
 
@@ -18,10 +33,8 @@ public class PlayerMovement : MonoBehaviour {
     private void ProcessMove() {
         float xOffset = movement.x * controlSpeed * Time.deltaTime;
         float yOffset = movement.y * controlSpeed * Time.deltaTime;
-        float xMax = 30f;
-        float yMax = 20f;
         
-        transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x + xOffset,-xMax,xMax), Mathf.Clamp(transform.localPosition.y + yOffset,-yMax,yMax), 0);
+        transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x + xOffset,-xClampRange,xClampRange), Mathf.Clamp(transform.localPosition.y + yOffset,-yClampRange,yClampRange), 0);
         
     }
 }
